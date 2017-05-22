@@ -470,6 +470,73 @@ html
               }
             }
             
+      section
+        h2 Dependencies
+        h3 Platform specific dependencies
+
+      section
+        h3 browser-app.module.ts
+        code.long-pre
+          pre.
+            @NgModule({
+              bootstrap: [AppComponent],
+              imports: [
+                BrowserModule.withServerTransition({
+                  appId: 'spotshot'
+                }),
+                AppModule,
+              ],
+              providers: [
+                <em>{ provide: Storage, useClass: LocalStorage },</em>
+              ],
+            })
+            export class BrowserAppModule { }
+
+      section
+        h3 server-app.module.ts
+        code.long-pre
+          pre.
+            @NgModule({
+              bootstrap: [AppComponent],
+              imports: [
+                BrowserModule.withServerTransition({
+                  appId: 'spotshot'
+                }),
+                ServerModule,
+                AppModule,
+              ],
+              providers: [
+                <em>{ provide: Storage, useClass: InMemoryStorage },</em>
+              ],
+            })
+            export class ServerAppModule { }
+
+      section
+        h3 app.component.ts
+        code.long-pre
+          pre.
+            <em>constructor(public storage: Storage)</em>
+
+      section
+        h3 storage.ts
+        code.very-long-pre
+          pre.
+            import {Injectable} from '@angular/core';
+            
+            export abstract class Storage {
+              abstract getItem(key: string): string;
+              abstract setItem(key: string, value: string): void;
+            }
+
+            @Injectable()
+            <em>export class LocalStorage implements Storage</em> {
+              ...
+            }
+
+            @Injectable()
+            <em>export class InMemoryStorage implements Storage</em> {
+              ...
+            }
 
       section
         h2 Set Timeout
@@ -489,6 +556,7 @@ html
           li https://github.com/FrozenPandaz/ng-universal-demo
           li https://github.com/angular/universal
           li https://gitter.im/angular/universal
+          li https://angular.io/docs/ts/latest/guide/universal.html
           
       section
         h2 Thank you!
