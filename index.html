@@ -134,5 +134,48 @@ export class AppComponent {
     <em>this.renderer.setAttribute(this.name.nativeElement, 'placeholder', 'Name');</em>
   }
 }
+</pre></code></section><section><h2>Dependencies</h2><h3>Platform specific dependencies</h3></section><section><h3>browser-app.module.ts</h3><code class="long-pre"><pre>@NgModule({
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule.withServerTransition({
+      appId: 'spotshot'
+    }),
+    AppModule,
+  ],
+  providers: [
+    <em>{ provide: Storage, useClass: LocalStorage },</em>
+  ],
+})
+export class BrowserAppModule { }
+</pre></code></section><section><h3>server-app.module.ts</h3><code class="long-pre"><pre>@NgModule({
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule.withServerTransition({
+      appId: 'spotshot'
+    }),
+    ServerModule,
+    AppModule,
+  ],
+  providers: [
+    <em>{ provide: Storage, useClass: InMemoryStorage },</em>
+  ],
+})
+export class ServerAppModule { }
+</pre></code></section><section><h3>app.component.ts</h3><code class="long-pre"><pre><em>constructor(public storage: Storage)</em>
+</pre></code></section><section><h3>storage.ts</h3><code class="very-long-pre"><pre>import {Injectable} from '@angular/core';
 
-</pre></code></section><section><h2>Set Timeout</h2><h3>Avoid using it, as it slows down the server response</h3></section><section><h2>Http</h2><h3>By default XHR requests will be made on the server and repeated on the client.</h3></section><section><h1>Angular CLI</h1><h3>Coming soon</h3></section><section><h3>Resources</h3><ul class="no-bullets"><li>https://github.com/FrozenPandaz/ng-universal-demo</li><li>https://github.com/angular/universal</li><li>https://gitter.im/angular/universal</li></ul></section><section><h2>Thank you!</h2></section></article><script src="index.js"></script></body></html>
+export abstract class Storage {
+  abstract getItem(key: string): string;
+  abstract setItem(key: string, value: string): void;
+}
+
+@Injectable()
+<em>export class LocalStorage implements Storage</em> {
+  ...
+}
+
+@Injectable()
+<em>export class InMemoryStorage implements Storage</em> {
+  ...
+}
+</pre></code></section><section><h2>Set Timeout</h2><h3>Avoid using it, as it slows down the server response</h3></section><section><h2>Http</h2><h3>By default XHR requests will be made on the server and repeated on the client.</h3></section><section><h1>Angular CLI</h1><h3>Coming soon</h3></section><section><h3>Resources</h3><ul class="no-bullets"><li>https://github.com/FrozenPandaz/ng-universal-demo</li><li>https://github.com/angular/universal</li><li>https://gitter.im/angular/universal</li><li>https://angular.io/docs/ts/latest/guide/universal.html</li></ul></section><section><h2>Thank you!</h2></section></article><script src="index.js"></script></body></html>
